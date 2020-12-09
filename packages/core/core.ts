@@ -1,4 +1,4 @@
-import { ComponentType, StatelessComponent, createElement, forwardRef } from 'react'
+import { ComponentType, StatelessComponent, createElement, forwardRef, ComponentClass } from 'react'
 import { cn, NoStrictEntityMods, ClassNameFormatter } from '@bem-react/classname'
 import { classnames } from '@bem-react/classnames'
 
@@ -47,6 +47,9 @@ export interface IClassNameProps {
 export type Enhance<T extends IClassNameProps> = (
   WrappedComponent: ComponentType<T>,
 ) => ComponentType<T>
+export type EnhanceClass<T extends IClassNameProps> = (
+  WrappedComponent: ComponentClass<T>,
+) => ComponentType<T>
 
 type Dictionary<T = any> = { [key: string]: T }
 
@@ -58,7 +61,7 @@ type withBemModOptions = {
 export function withBemMod<T, U extends IClassNameProps = {}>(
   blockName: string,
   mod: NoStrictEntityMods,
-  enhance?: Enhance<T & U> | withBemModOptions,
+  enhance?: EnhanceClass<T & U> | Enhance<T & U> | withBemModOptions,
 ) {
   let entity: ClassNameFormatter
   let entityClassName: string
